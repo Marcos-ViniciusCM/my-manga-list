@@ -1,4 +1,4 @@
-package br.com.marcos.model.repository;
+package br.com.marcos.repository;
 
 import java.util.List;
 

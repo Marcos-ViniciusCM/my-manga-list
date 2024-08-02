@@ -3,22 +3,25 @@ package br.com.marcos.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.marcos.model.Genre;
 import br.com.marcos.model.Manga;
-import br.com.marcos.model.repository.MangaRepository;
+import br.com.marcos.repository.MangaRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class MangaService {
 	
+	@Autowired
 	MangaRepository mangaR;
 	
 	public void saveManga(Manga m, List<Genre> genres) {
 		 m.setGenreManga(genres);
 		 mangaR.save(m);  
 	}
-	
+	@Transactional(readOnly = true)
 	public List<Manga> getAllManga() {
 		return mangaR.findAll();
 	}

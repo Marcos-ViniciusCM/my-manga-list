@@ -33,6 +33,21 @@ public class Genre {
 
 
 
+	public Genre(String name) {
+		super();
+		this.name = name;
+	}
+
+
+
+	public Genre(String name, Manga manga) {
+		super();
+		this.name = name;
+		this.manga = manga;
+	}
+
+
+
 	public Long getGenre_id() {
 		return genre_id;
 	}
