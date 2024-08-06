@@ -1,9 +1,6 @@
-package br.com.marcos.dto;
+package br.com.marcos.record;
 
 import java.util.List;
-
-import br.com.marcos.model.Genre;
-import br.com.marcos.model.Manga;
 
 public record MangaRequestDto(
 		String name,

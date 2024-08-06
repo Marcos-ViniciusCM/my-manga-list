@@ -1,5 +1,8 @@
 package br.com.marcos.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,11 +14,12 @@ public class Genre {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore 
 	private Long genre_id;
 	
 	private String name;
-	
-	@ManyToOne
+    @JsonIgnore 
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	private Manga manga;
 
 	 
@@ -23,6 +27,12 @@ public class Genre {
 	
 	
 	
+
+	public Genre() {
+		
+	}
+
+
 
 	public Genre(Long genre_id, String name, Manga manga) {
 		
@@ -83,6 +93,12 @@ public class Genre {
 	}
 	
 	
-	
+	   @Override
+	    public String toString() {
+	        return "Genre{" +
+	               "id=" + genre_id +
+	               ", name='" + name + '\'' +
+	               '}';
+	    }
 	
 }

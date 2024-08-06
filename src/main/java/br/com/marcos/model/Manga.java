@@ -2,14 +2,17 @@ package br.com.marcos.model;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.beans.factory.annotation.Value;
 
-import br.com.marcos.dto.MangaRequestDto;
+import br.com.marcos.record.MangaRequestDto;
+import br.com.marcos.record.MangaUpdateDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
@@ -25,45 +28,70 @@ public class Manga {
 	@NotBlank(message = "cannot be blank")
 	private String author;
 	
-	@JsonIgnore 
-	@OneToMany(mappedBy = "genre_id")
+	
+	@ManyToMany
+    @JoinTable(
+        name = "manga_genre",
+        joinColumns = @JoinColumn(name = "manga_id"),
+        inverseJoinColumns = @JoinColumn(name = "genre_id")
+    )
 	private List<Genre> genreManga;
 	
-	
+	 @Value("${some.key:0}")
     private Double averageNota;
 	
+    @Value("${some.key:0}")
+	private int peopleVote;
 	
-	@OneToMany(mappedBy = "note_id")
-	private List<Note> notes;
+
+	
+	
+	
 
 
-	
 
 	public Manga(Long id, @NotBlank(message = "cannot be blank") String name,
 			@NotBlank(message = "cannot be blank") String author, List<Genre> genreManga, Double averageNota,
-			List<Note> notes) {
-		super();
+		 int peopleVote) {
+		
 		this.id = id;
 		this.name = name;
 		this.author = author;
 		this.genreManga = genreManga;
 		this.averageNota = averageNota;
-		this.notes = notes;
+		this.peopleVote = peopleVote;
 	}
-	
-	
+
+
+
+
+
+	public Manga(MangaRequestDto manga, List<Genre> genres) {
+		this.name = manga.name();
+		this.author = manga.author();
+		this.genreManga = genres;
+		this.averageNota = 0.0;
+		this.peopleVote = 0;
+	}
+
+	public Manga(MangaUpdateDto manga, List<Genre> genres) {
+		this.id = manga.id();
+		this.name = manga.name();
+		this.author = manga.author();
+		this.genreManga = genres;
+		this.averageNota = 0.0;
+		this.peopleVote = 0;
+	}
 
 
 
 	public Manga(@NotBlank(message = "cannot be blank") String name,
-			@NotBlank(message = "cannot be blank") String author, List<Genre> genreManga, Double averageNota,
-			List<Note> notes) {
-		super();
+			@NotBlank(message = "cannot be blank") String author, List<Genre> genreManga, Double averageNota) {
+		
 		this.name = name;
 		this.author = author;
 		this.genreManga = genreManga;
-		this.averageNota = averageNota;
-		this.notes = notes;
+		this.averageNota = averageNota;	
 	}
 
 
@@ -156,28 +184,19 @@ public class Manga {
 
 
 
-
-
-	public List<Note> getNotes() {
-		return notes;
+	public int getPeopleVote() {
+		return peopleVote;
 	}
 
 
 
 
 
-	public void setNotes(List<Note> notes) {
-		this.notes = notes;
+	public void setPeopleVote(int peopleVote) {
+		this.peopleVote = peopleVote;
 	}
-
-
-
-//	public Manga(MangaRequestDto request) {
-//		this.name = request.name();
-//		this.author = request.Author();
-//		this.genreManga = request.genres();
-//		this.averageNota = request.rating();
-//	}
+	
+	
 
 	
 	

@@ -1,4 +1,4 @@
-package br.com.marcos.dto;
+package br.com.marcos.record;
 
 public record GenreDto(String name) {
 

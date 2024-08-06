@@ -1,57 +1,79 @@
 package br.com.marcos.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import br.com.marcos.exceptionResponse.ResourceNotFoundException;
 import br.com.marcos.model.Genre;
 import br.com.marcos.model.Manga;
+import br.com.marcos.record.MangaRequestDto;
+import br.com.marcos.record.MangaUpdateDto;
+import br.com.marcos.repository.GenreRepository;
 import br.com.marcos.repository.MangaRepository;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class MangaService {
 	
 	@Autowired
-	MangaRepository mangaR;
+	MangaRepository mangaRepository;
 	
-	public void saveManga(Manga m, List<Genre> genres) {
-		 m.setGenreManga(genres);
-		 mangaR.save(m);  
-	}
-	@Transactional(readOnly = true)
-	public List<Manga> getAllManga() {
-		return mangaR.findAll();
+	@Autowired
+	GenreRepository genreRepository;
+	
+	public void saveMangaAndGenre(MangaRequestDto mangaDto, List<Genre> genres) {
+	    Manga mangaSaved = new Manga(mangaDto, genres);
+	    mangaSaved.setGenreManga(genres);
+	  
+		mangaRepository.save(mangaSaved);  
 	}
 	
-	public Manga updateManga(List<Genre> genres , Manga m) {
-		var entity = mangaR.findById(m.getId());
-		if(entity.isPresent()) {
-			Manga manga = entity.get();
-			manga.setAuthor(m.getAuthor());
-			manga.setName(m.getName());
-			return mangaR.save(manga);
-		}
-		return null;
+	
+	public List<Manga> getAllManga(Sort sort) {
+		
+		return mangaRepository.findAll(sort);
+	}
+	
+	public void saveManga(Manga manga) {
+		mangaRepository.save(manga);
+	}
+	
+	public Manga updateManga(List<Genre> genres , MangaUpdateDto mangaUpdate) {
+		var entity = mangaRepository.findById(mangaUpdate.id()).orElseThrow(()->new ResourceNotFoundException("No manga Found for this id"));
+	
+		
+		entity.setAuthor(mangaUpdate.author());
+		entity.setName(mangaUpdate.name());
+		
+		  for (Genre genre : genres) {
+		        if (genre.getGenre_id() == null) { // Verifique se o gênero é novo
+		            genreRepository.save(genre); // Salve o novo gênero
+		        }
+		    }
+		entity.setGenreManga(genres);
+		
+		
+		return mangaRepository.save(entity);
 	}
 	
 	public void deleteManga(Long id) {
 		
-		mangaR.deleteById(id);
+		mangaRepository.deleteById(id);
 	}
 	
-	public Optional<Manga> getById(Long id) {
-		return mangaR.findById(id);
+	public Manga getById(Long id) {
+		return mangaRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("No manga For This id"));
 	}
 	
-	public List<Manga>findMangaByGenre(String genreName){
-		return mangaR.findBygenreMangaNameContainingIgnoreCase(genreName);
+	
+	public void deleteAll() {
+		mangaRepository.deleteAll();
 	}
 	
-	public List<Manga>findAllMangaByAverageNotaDesc(){
-		return mangaR.findAllByOrderByAverageNotaDesc();
+	public void deleteMangaById(Long id) {
+		mangaRepository.deleteById(id);
 	}
 
 }
