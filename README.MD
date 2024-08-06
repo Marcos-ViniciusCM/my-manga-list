@@ -48,15 +48,16 @@ Para fazer as requisições HTTP abaixo, foi utilizada a ferramenta [httpie](htt
 ```
 $ http POST :8080/manga
 name="Vagabond" author="Takehiko Inoue" genres=[{ "name": "Action" }, { "name": "Seinen" }]
-
-{
-    "name": "Vagabond ",
-    "author": "Takehiko Inoue",
-    "genres": [
-        { "name": "Shounem" },
-        { "name": "Seinen" }
-    ]
-}
+[
+  {
+      "name": "Vagabond ",
+      "author": "Takehiko Inoue",
+      "genres": [
+          { "name": "Shounem" },
+          { "name": "Seinen" }
+      ]
+  }
+]
 ```
 
 - Listar Manga Pelo Ranking e Nome
