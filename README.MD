@@ -86,7 +86,7 @@ $ http GET :8080/manga
 - Atualizar Manga
 ```
 $ http PUT :8080/manga/1 
-name="Vagabond" author="Takehiko Inoue" genres=[{ "name": "Shounem" }, { "name": "Seinen" }, {"name":"Action"]
+name="Vagabond" author="Takehiko Inoue" genres=[{ "name": "Shounem" }, { "name": "Seinen" }, {"name":"Action"}]
 
 []
 ```
@@ -105,6 +105,28 @@ $ http POST :8080/rating/1
 
 [vote successful]
 ```
+$ http GET :8080/manga 
+
+[
+    {
+        "id": 1,
+        "name": "Vagabond ",
+        "author": "Takehiko Inoue",
+        "genreManga": [
+            {
+                "name": "Action"
+            },
+            {
+                "name": "Seinen"
+            }
+        ],
+        "averageNota": 3,
+        "peopleVote": 1
+    }
+]
+```
+
+
 
 ## Detalhes do Projeto
 
