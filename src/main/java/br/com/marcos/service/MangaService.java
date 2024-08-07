@@ -58,10 +58,6 @@ public class MangaService {
 		return mangaRepository.save(entity);
 	}
 	
-	public void deleteManga(Long id) {
-		
-		mangaRepository.deleteById(id);
-	}
 	
 	public Manga getById(Long id) {
 		return mangaRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("No manga For This id"));
