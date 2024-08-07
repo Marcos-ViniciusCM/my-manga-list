@@ -119,6 +119,9 @@ $ http GET :8080/manga
             },
             {
                 "name": "Seinen"
+            },
+            {
+                "name": "Shounem"
             }
         ],
         "averageNota": 3,
