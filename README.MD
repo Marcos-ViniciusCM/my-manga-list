@@ -105,6 +105,7 @@ $ http POST :8080/rating/1
 
 [vote successful]
 ```
+```
 $ http GET :8080/manga 
 
 [
